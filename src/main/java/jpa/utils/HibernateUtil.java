@@ -6,6 +6,10 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+/*
+ * this is a singleton session factory
+ * */
+
 public class HibernateUtil {
 
 	private static SessionFactory factory;
@@ -13,8 +17,8 @@ public class HibernateUtil {
 
 	public static synchronized Session getSessionFactory() {
 		if (factory == null) {
-			final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-					.configure("hibernate.cfg.xml").build();
+			final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml")
+					.build();
 			try {
 				factory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
 			} catch (Exception e) {

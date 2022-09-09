@@ -15,9 +15,14 @@
 
 		<!-- Maria DB dialect -->
 		<property name="dialect">org.hibernate.dialect.MariaDB53Dialect</property>
+
 		<!-- Echo all executed SQL to stdout -->
 		<property name="hibernate.show_sql">true </property>
 		<property name="hibernate.format_sql">true </property>
 
+		<!-- Mapped entities -->
+		<mapping class="jpa.entitymodels.Student" />
+		<mapping class="jpa.entitymodels.Course" />
+		<mapping class="jpa.entitymodels.StudentCourseEnrollment" />
 	</session-factory>
 </hibernate-configuration>  

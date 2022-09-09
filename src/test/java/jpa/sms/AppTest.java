@@ -1,51 +1,118 @@
 package jpa.sms;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 
-/**
- * Unit test for simple App.
- */
+import jpa.entitymodels.CompoundKeys;
+import jpa.entitymodels.Course;
+import jpa.entitymodels.Student;
+import jpa.entitymodels.StudentCourseEnrollment;
+import jpa.utils.HibernateUtil;
+
 public class AppTest {
 	/**
-	 * Rigorous Test :-)
+	 * ¯\_(ツ)_/¯ it works on my machine,. All test cases start with a failing test.
 	 */
 
 	@BeforeAll
 	static void init() {
-		assertTrue(true);
-		System.out.println("init test");
+		System.out.println(">>> LOG: init test ¯\\_(ツ)_/¯ <<<");
 	}
 
 	@Test
-	public void shouldAnswerWithTrue() {
-		assertTrue(true);
+	public void createStudentTable() {
+		// fail();
+		Session session = HibernateUtil.getSessionFactory();
+		Transaction transaction = session.beginTransaction();
+		Student s = new Student("john_smith@email.com", "John Smith", "!@wyz19&^456");
+		session.save(s);
+		transaction.commit();
+		HibernateUtil.shutdown();
 	}
 
 	@Test
-	public void shouldAnswerWithFalse() {
-		assertTrue(false);
+	public void createCourseTable() {
+		// fail();
+		Session session = HibernateUtil.getSessionFactory();
+		Transaction transaction = session.beginTransaction();
+		Course c = new Course(100, "Engineering", "Ricardo Millo");
+		session.save(c);
+		transaction.commit();
+		HibernateUtil.shutdown();
 	}
 
 	@Test
-	public void sessionTest() {
-		SessionFactory factory = new Configuration().configure().buildSessionFactory();
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
+	public void registerStudentToCourseTest() {
+		// fail();
+		Session session = HibernateUtil.getSessionFactory();
+		Transaction transaction = session.beginTransaction();
 
-		System.out.println("created test");
+		String studentEmail = "john_smith@email.com";
+		int courseId = 1;
 
-		t.commit();
-		factory.close();
-		session.close();
-		
-		assertTrue(true);
+		// enroll student john smith to engineering course
+		StudentCourseEnrollment sce = new StudentCourseEnrollment();
+		sce.setcId(courseId);
+		sce.setsEmail(studentEmail);
+
+		session.saveOrUpdate(sce);
+		transaction.commit();
+		HibernateUtil.shutdown();
 	}
 
+	@Test
+	public void deleteAStudentTest() {
+		// fail();
+		Session session = HibernateUtil.getSessionFactory();
+		Transaction transaction = session.beginTransaction();
+
+		// delete a persistent object
+		Student s1 = session.get(Student.class, "aiannitti7@is.gd");
+		if (s1 != null) {
+			session.delete(s1);
+			System.out.println("Student deleted");
+		}
+		transaction.commit();
+		HibernateUtil.shutdown();
+	}
+
+	@Test
+	public void deleteACourseTest() {
+		// fail();
+		Session session = HibernateUtil.getSessionFactory();
+		Transaction transaction = session.beginTransaction();
+
+		// delete a persistent object
+		// delete English course
+		// note we can't delete a course if a student is currently enrolled
+		Course c1 = session.get(Course.class, 100);
+		if (c1 != null) {
+			session.delete(c1);
+			System.out.println("Course deleted");
+		}
+		transaction.commit();
+		HibernateUtil.shutdown();
+	}
+
+	/* DQL Tests */
+	@Test
+	public void getAllCoursesTest() {
+		// fail();
+		Session session = HibernateUtil.getSessionFactory();
+		Transaction transaction = session.beginTransaction();
+
+		Query query = session.createQuery("from Course");
+		List<Course> list = query.list();
+
+		transaction.commit();
+		HibernateUtil.shutdown();
+		assertTrue((list.size() > 0));
+	}
 }
