@@ -1,6 +1,7 @@
 package jpa.sms;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 
@@ -10,7 +11,6 @@ import org.hibernate.query.Query;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 
-import jpa.entitymodels.CompoundKeys;
 import jpa.entitymodels.Course;
 import jpa.entitymodels.Student;
 import jpa.entitymodels.StudentCourseEnrollment;
@@ -103,16 +103,60 @@ public class AppTest {
 
 	/* DQL Tests */
 	@Test
-	public void getAllCoursesTest() {
+	public void getAllStudentsTest() {
 		// fail();
 		Session session = HibernateUtil.getSessionFactory();
 		Transaction transaction = session.beginTransaction();
 
-		Query query = session.createQuery("from Course");
-		List<Course> list = query.list();
+		@SuppressWarnings("unchecked")
+		Query<Student> q = session.createQuery("from Student");
+		List<Student> studentList = q.list();
+
+		transaction.commit();
+		HibernateUtil.shutdown();
+		assertTrue((studentList.size() > 0));
+	}
+
+	@Test
+	public void getStudentByEmailTest() {
+		// fail();
+		Session session = HibernateUtil.getSessionFactory();
+		Transaction transaction = session.beginTransaction();
+
+		String sEmail = "cjaulme9@bing.com";
+		String hql = "from Student s where s.sEmail = :sEmail";
+
+		@SuppressWarnings("unchecked")
+		Query<Student> q = session.createQuery(hql);
+		q.setParameter("sEmail", sEmail);
+		List<Student> list = q.list();
 
 		transaction.commit();
 		HibernateUtil.shutdown();
 		assertTrue((list.size() > 0));
+
 	}
+
+	@Test
+	public void getStudentCoursesTest() {
+		// fail();
+		Session session = HibernateUtil.getSessionFactory();
+		Transaction transaction = session.beginTransaction();
+
+		String sEmail = "cjaulme9@bing.com";
+		String hql = "from StudentCourseEnrollment sc where sc.sEmail = :sEmail";
+
+		@SuppressWarnings("unchecked")
+		Query<Student> q = session.createQuery(hql);
+		q.setParameter("sEmail", sEmail);
+		List<Student> list = q.list();
+
+		transaction.commit();
+		HibernateUtil.shutdown();
+		assertTrue((list.size() > 0));
+
+	}
+
+	// TODO: FIX JUNIT 5!!!
+
 }

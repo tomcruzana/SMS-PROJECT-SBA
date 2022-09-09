@@ -1,3 +1,10 @@
+C:\Users\tomcr\Documents\SMS\sms\src\main\java\jpa\entitymodels\Student.java
+C:\Users\tomcr\Documents\SMS\sms\src\main\java\jpa\service\CourseService.java
+C:\Users\tomcr\Documents\SMS\sms\src\main\java\jpa\utils\HibernateUtil.java
 C:\Users\tomcr\Documents\SMS\sms\src\main\java\jpa\mainrunner\SMSRunner.java
-C:\Users\tomcr\Documents\SMS\sms\src\main\java\jpa\entitymodels\StudentCourses.java
-C:\Users\tomcr\Documents\SMS\sms\src\main\java\jpa\entitymodels\StudentCoursesID.java
+C:\Users\tomcr\Documents\SMS\sms\src\main\java\jpa\service\StudentService.java
+C:\Users\tomcr\Documents\SMS\sms\src\main\java\jpa\dao\StudentDAO.java
+C:\Users\tomcr\Documents\SMS\sms\src\main\java\jpa\dao\CourseDAO.java
+C:\Users\tomcr\Documents\SMS\sms\src\main\java\jpa\entitymodels\StudentCourseEnrollment.java
+C:\Users\tomcr\Documents\SMS\sms\src\main\java\jpa\entitymodels\CompoundKeys.java
+C:\Users\tomcr\Documents\SMS\sms\src\main\java\jpa\entitymodels\Course.java
