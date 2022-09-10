@@ -45,7 +45,7 @@ class CrudTest {
 		// fail();
 		Session session = HibernateUtil.getSessionFactory();
 		Transaction transaction = session.beginTransaction();
-		Course c = new Course(100, "Engineering", "Ricardo Millo");
+		Course c = new Course(11, "Engineering", "Ricardo Millo");
 		session.save(c);
 		transaction.commit();
 		HibernateUtil.shutdown();

@@ -7,13 +7,13 @@ package jpa.mainrunner;
 
 import static java.lang.System.out;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 import jpa.entitymodels.Course;
 import jpa.entitymodels.Student;
 import jpa.service.CourseService;
-import jpa.service.StudentCourseService;
 import jpa.service.StudentService;
 
 /**
@@ -44,7 +44,16 @@ public class SMSRunner {
 	public static void main(String[] args) {
 
 		SMSRunner sms = new SMSRunner();
-		sms.run();
+		// handling all possible errors
+		try {
+			sms.run();
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("An error occured! Enter the correct index of the course.\nPlease try again ¯\\_(ツ)_/¯ " + e);
+		} catch (InputMismatchException e) {
+			System.out.println("An error occured! Enter a valid input. \nPlease try again ¯\\_(ツ)_/¯ " + e);
+		} catch (Exception e) {
+			System.out.println("An error occured! Please try again ¯\\_(ツ)_/¯ " + e);
+		}
 	}
 
 	private void run() {
@@ -79,12 +88,12 @@ public class SMSRunner {
 		out.print("Enter your password: ");
 		String password = sin.next();
 
-		List<Student> students = studentService.getStudentByEmail(email);
+		Student students = studentService.getStudentByEmail(email);
 		if (students != null) {
-			currentStudent = students.get(0);
+			currentStudent = students;
 		}
 
-		if (currentStudent != null & currentStudent.getStudentPassword().equals(password)) {
+		if (currentStudent != null && currentStudent.getsPass().equals(password)) {
 			List<Course> courses = studentService.getStudentCourses(email);
 			out.println("MyClasses");
 			for (Course course : courses) {
@@ -105,7 +114,7 @@ public class SMSRunner {
 		switch (sin.nextInt()) {
 		case 1:
 			List<Course> allCourses = courseService.getAllCourses();
-			List<Course> studentCourses = studentService.getStudentCourses(currentStudent.getStudentEmail());
+			List<Course> studentCourses = studentService.getStudentCourses(currentStudent.getsEmail());
 			allCourses.removeAll(studentCourses);
 			out.printf("%5s%15S%15s\n", "ID", "Course", "Instructor");
 			for (Course course : allCourses) {
@@ -114,20 +123,21 @@ public class SMSRunner {
 			out.println();
 			out.print("Enter Course Number: ");
 			int number = sin.nextInt();
-			Course newCourse = courseService.GetCourseById(number).get(0);
+			Course newCourse = courseService.getAllCourses().get(number - 1); // get the index of the course
 
 			if (newCourse != null) {
-				studentService.registerStudentToCourse(currentStudent.getStudentEmail(), newCourse);
-				Student temp = studentService.getStudentByEmail(currentStudent.getStudentEmail()).get(0);
+				studentService.registerStudentToCourse(currentStudent.getsEmail(), newCourse.getcId());
+				Student temp = studentService.getStudentByEmail(currentStudent.getsEmail());
 
-				StudentCourseService scService = new StudentCourseService();
-				List<Course> sCourses = scService.getAllStudentCourses(temp.getStudentEmail());
+				StudentService scService = new StudentService();
+				List<Course> sCourses = scService.getStudentCourses(temp.getsEmail());
 
 				out.println("MyClasses");
 				for (Course course : sCourses) {
 					out.println(course);
 				}
 			}
+			System.out.println("You have been signed out.");
 			break;
 		case 2:
 		default:
