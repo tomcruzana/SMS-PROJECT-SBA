@@ -1,5 +1,6 @@
 package jpa.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -47,8 +48,22 @@ public class StudentService implements StudentDAO {
 
 	@Override
 	public boolean validateStudent(String sEmail, String sPassword) {
+		Session session = HibernateUtil.getSessionFactory();
+		Transaction transaction = session.beginTransaction();
 
-		return false;
+		String hql = "from Student s where s.sEmail = :sEmail AND s.sPass = :sPass";
+
+		@SuppressWarnings("unchecked")
+		Query<Student> q = session.createQuery(hql);
+		q.setParameter("sEmail", sEmail);
+		q.setParameter("sPass", sPassword);
+		List<Student> studentList = q.list();
+
+		boolean isValidated = (studentList.get(0).getsEmail().equalsIgnoreCase(sEmail)
+				&& studentList.get(0).getsPass().equals(sPassword)) ? true : false;
+		transaction.commit();
+		HibernateUtil.shutdown();
+		return isValidated;
 	}
 
 	@Override
@@ -70,18 +85,29 @@ public class StudentService implements StudentDAO {
 		Session session = HibernateUtil.getSessionFactory();
 		Transaction transaction = session.beginTransaction();
 
-		String hql = "from StudentCourseEnrollment sc where sc.sEmail = :sEmail";
+		String hql = "select c.cId, c.cName, c.cInstructorName "
+				+ "FROM Course c JOIN StudentCourseEnrollment sc ON c.cId = sc.cId "
+				+ "JOIN Student s ON s.sEmail = sc.sEmail " + "WHERE s.sEmail = :sEmail";
 
 		@SuppressWarnings("unchecked")
-		Query<Student> q = session.createQuery(hql);
+		Query<Object[]> q = session.createQuery(hql);
 		q.setParameter("sEmail", sEmail);
-		List<Student> list = q.list();
+
+		List<Object[]> list = q.list();
+		List<Course> cList = new ArrayList<>();
+
+		// this will convert the object[] to course[]
+		for (Object[] result : q.list()) {
+			int cid = (Integer) result[0];
+			String name = (String) result[1];
+			String instructor = (String) result[2];
+			cList.add(new Course(cid, name, instructor));
+		}
 
 		transaction.commit();
 		HibernateUtil.shutdown();
 
-		// todo: must return course
-		return null;
+		return cList;
 	}
 
 }

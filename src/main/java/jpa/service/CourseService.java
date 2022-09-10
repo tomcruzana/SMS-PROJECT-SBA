@@ -15,16 +15,17 @@ public class CourseService implements CourseDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Course> getAllCourses() {
-		List<Course> courseList;
+
 		Session session = HibernateUtil.getSessionFactory();
 		Transaction transaction = session.beginTransaction();
 
-		@SuppressWarnings("rawtypes")
-		Query query = session.createQuery("from Course");
+		Query<Course> query = session.createQuery("from Course");
+		List<Course> courseList;
 		courseList = query.list();
 
 		transaction.commit();
 		HibernateUtil.shutdown();
+
 		return courseList;
 	}
 

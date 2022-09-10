@@ -16,7 +16,8 @@ import jpa.service.CourseService;
 import jpa.service.StudentCourseService;
 import jpa.service.StudentService;
 
-/**1
+/**
+ * 1
  * 
  * @author Harry
  *
@@ -118,10 +119,9 @@ public class SMSRunner {
 			if (newCourse != null) {
 				studentService.registerStudentToCourse(currentStudent.getStudentEmail(), newCourse);
 				Student temp = studentService.getStudentByEmail(currentStudent.getStudentEmail()).get(0);
-				
+
 				StudentCourseService scService = new StudentCourseService();
 				List<Course> sCourses = scService.getAllStudentCourses(temp.getStudentEmail());
-				
 
 				out.println("MyClasses");
 				for (Course course : sCourses) {

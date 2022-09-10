@@ -1,0 +1,28 @@
+-------------------------------------------------------------------------------
+Test set: jpa.sms.AppTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 1.501 s <<< FAILURE! - in jpa.sms.AppTest
+createCourseTable  Time elapsed: 1.482 s  <<< ERROR!
+javax.persistence.PersistenceException: org.hibernate.exception.ConstraintViolationException: could not execute statement
+	at jpa.sms.AppTest.createCourseTable(AppTest.java:48)
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement
+	at jpa.sms.AppTest.createCourseTable(AppTest.java:48)
+Caused by: java.sql.SQLIntegrityConstraintViolationException: (conn=63) Duplicate entry '100' for key 'PRIMARY'
+	at jpa.sms.AppTest.createCourseTable(AppTest.java:48)
+Caused by: org.mariadb.jdbc.internal.util.exceptions.MariaDbSqlException: Duplicate entry '100' for key 'PRIMARY'
+	at jpa.sms.AppTest.createCourseTable(AppTest.java:48)
+Caused by: java.sql.SQLException: Duplicate entry '100' for key 'PRIMARY'
+	at jpa.sms.AppTest.createCourseTable(AppTest.java:48)
+
+createStudentTable  Time elapsed: 0.005 s  <<< ERROR!
+javax.persistence.PersistenceException: org.hibernate.exception.ConstraintViolationException: could not execute statement
+	at jpa.sms.AppTest.createStudentTable(AppTest.java:37)
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement
+	at jpa.sms.AppTest.createStudentTable(AppTest.java:37)
+Caused by: java.sql.SQLIntegrityConstraintViolationException: (conn=63) Duplicate entry 'john_smith@email.com' for key 'PRIMARY'
+	at jpa.sms.AppTest.createStudentTable(AppTest.java:37)
+Caused by: org.mariadb.jdbc.internal.util.exceptions.MariaDbSqlException: Duplicate entry 'john_smith@email.com' for key 'PRIMARY'
+	at jpa.sms.AppTest.createStudentTable(AppTest.java:37)
+Caused by: java.sql.SQLException: Duplicate entry 'john_smith@email.com' for key 'PRIMARY'
+	at jpa.sms.AppTest.createStudentTable(AppTest.java:37)
+
